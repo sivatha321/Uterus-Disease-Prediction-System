@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+.report-container{
+    width:95%;
+    margin:auto;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#1f3f8b;
+    font-size:48px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.header p{
+    color:#666;
+    margin:3px;
+}
+
+.line{
+    height:4px;
+    background:#1f3f8b;
+    margin-bottom:20px;
+}
+
+.report-meta{
+    margin-bottom:20px;
+    color:#444;
+    font-size:15px;
+}
+
+.patient-card,
+.report-card{
+    background:white;
+    border:1px solid #ddd;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.patient-card h2,
+.report-card h2{
+    color:#1f3f8b;
+    margin-bottom:20px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+
+.info-col{
+    width:45%;
+}
+
+.info-col p{
+    margin:15px 0;
+    font-size:17px;
+}
+
+.report-content{
+    white-space:pre-line;
+    line-height:1.8;
+    font-size:16px;
+}
+
+.actions{
+    margin-bottom:20px;
+}
+
+.btn-back{
+    background:#6c757d;
+    color:white;
+    text-decoration:none;
+    padding:10px 20px;
+    border-radius:6px;
+    margin-right:10px;
+}
+
+.btn-print{
+    background:#198754;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* PRINT SETTINGS */
+
+@media print {
+
+    .actions,
+    .sidebar,
+    .navbar,
+    footer,
+    .main-header,
+    .main-sidebar {
+        display:none !important;
+    }
+
+    body{
+        background:white !important;
+    }
+
+    .content-wrapper{
+        margin:0 !important;
+        padding:0 !important;
+    }
+
+    .patient-card,
+    .report-card{
+        box-shadow:none;
+        border:1px solid #ccc;
+    }
+
+    .header h1{
+        font-size:28px;
+    }
+
+    .header p{
+        font-size:14px;
+    }
+
+    .report-content{
+        font-size:14px;
+    }
+
+}
+
+</style>
+
+<div class="report-container">
+
+<div class="actions">
+
+    <a href="{% url 'view_patient' patient.id %}"
+       class="btn-back">
+        ← Back
+    </a>
+
+    <button onclick="window.print()"
+            class="btn-print">
+        Print 
+    </button>
+
+</div>
+
+<div class="header">
+
+    <h1>Uterus Disease Prediction</h1>
+
+    <p>Department of Gynecology and Women's Health</p>
+
+</div>
+
+<div class="line"></div>
+
+<div class="report-meta">
+
+
+    <strong>Date:</strong>
+    {{ patient.created_at|date:"d M Y" }}
+
+</div>
+
+<div class="patient-card">
+
+    <h2>PATIENT INFORMATION</h2>
+
+    <div class="info-row">
+
+        <div class="info-col">
+
+            <p>
+                <strong>Patient ID:</strong>
+                {{ patient.id }}
+            </p>
+
+            <p>
+                <strong>Age:</strong>
+                {{ patient.age }}
+            </p>
+
+            <p>
+                <strong>Final Diagnosis:</strong>
+                {{ patient.rf_disease }}
+            </p>
+
+        </div>
+
+        <div class="info-col">
+
+            <p>
+                <strong>Name:</strong>
+                {{ patient.patient_name }}
+            </p>
+
+            <p>
+                <strong>BMI Status:</strong>
+                {{ patient.bmi_category }}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="report-card">
+
+    <h2>CLINICAL ASSESSMENT REPORT</h2>
+
+    <div class="report-content">
+        {{ patient.ai_report }}
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

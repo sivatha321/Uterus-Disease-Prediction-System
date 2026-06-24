@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block title %}View Patient{% endblock %}
+
+{% block page_title %}View Patient{% endblock %}
+
+{% block content %}
+
+<style>
+
+.view-container{
+    padding:40px;
+    display:flex;
+    justify-content:center;
+}
+
+.view-box{
+    width:95%;
+    max-width:1100px;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.view-box h2{
+    text-align:center;
+    color:#1e3a8a;
+    margin-bottom:35px;
+}
+
+.info{
+    margin-bottom:20px;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.info strong{
+    color:#1e3a8a;
+    display:inline-block;
+    width:170px;
+}
+
+
+.patient-img{
+    width:100%;
+    max-width:900px;
+    height:auto;
+    border-radius:12px;
+    border:2px solid #ccc;
+    margin-top:15px;
+    display:block;
+    box-shadow:0 4px 15px rgba(0,0,0,0.15);
+}
+
+.image-section{
+    margin-top:25px;
+}
+
+.back-link{
+    display:block;
+    text-align:center;
+    margin-top:30px;
+    padding:12px;
+    background:#0d6efd;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    width:220px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.back-link:hover{
+    opacity:0.9;
+}
+
+.image-container{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    align-items:flex-start;
+    flex-wrap:wrap;
+}
+
+.image-box{
+    text-align:center;
+}
+
+.image-box img{
+    width:400px;
+    height:400px;
+    object-fit:cover;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+.report-box{
+    margin-top:20px;
+    padding:20px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#f8f9fa;
+}
+
+.confidence-circle {
+    --size: 130px;
+
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            #198754 calc(var(--percentage) * 1%),
+            #e5e5e5 0
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    margin: 20px 0;
+}
+
+.confidence-circle::before {
+    content: "";
+    position: absolute;
+
+    width: 95px;
+    height: 95px;
+
+    background: white;
+    border-radius: 50%;
+}
+
+.confidence-circle span {
+    position: relative;
+    z-index: 1;
+
+    font-size: 22px;
+    font-weight: bold;
+    color: #198754;
+}
+
+.diagnosis-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:30px;
+    margin:20px 0;
+    flex-wrap:wrap;
+}
+
+.prediction-card{
+    flex:1;
+    min-width:250px;
+
+    background:#f8f9fa;
+    border-left:6px solid #198754;
+
+    padding:20px;
+    border-radius:12px;
+
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.prediction-card h4{
+    color:#6c757d;
+    margin-bottom:10px;
+}
+
+.prediction-card h2{
+    color:#101110;
+    font-weight:bold;
+}
+
+.confidence-card{
+    text-align:center;
+}
+
+
+</style>
+<div class="view-container">
+
+<div class="view-box">
+
+    <div class="diagnosis-container">
+
+        <div class="prediction-card">
+            <h4>Prediction</h4>
+            <h2>{{ patient.rf_disease }}</h2>
+        </div>
+
+        <div class="confidence-card">
+            <h4>Confidence Score</h4>
+
+            <div class="confidence-circle"
+                style="--percentage: {{ patient.confidence_score }};">
+                <span>{{ patient.confidence_score }}%</span>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h3 style="text-align:center;">MRI Images</h3>
+
+    <div class="image-container">
+
+        <div class="image-box">
+            <h4>Original MRI</h4>
+
+            <img src="{{ patient.image.url }}"
+                alt="Original MRI">
+        </div>
+
+        {% if patient.rf_disease != "Normal Uterus" %}
+            <div class="image-box">
+                <h4>Affected Region (Grad-CAM)</h4>
+
+                {% if patient.gradcam_image %}
+                    <img src="{{ patient.gradcam_image.url }}"
+                        alt="GradCAM">
+                {% else %}
+                    <p>No Grad-CAM available</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+
+    <hr>
+
+    <h3 style="text-align:center;">Patient Details</h3>
+
+    <div class="info">
+        <strong>Patient ID :</strong>
+        {{ patient.id }}
+    </div>
+
+    <div class="info">
+        <strong>Patient Name :</strong>
+        {{ patient.patient_name }}
+    </div>
+
+    <div class="info">
+        <strong>Age :</strong>
+        {{ patient.age }}
+    </div>
+
+    <div class="info">
+        <strong>BMI Category :</strong>
+        {{ patient.bmi_category }}
+    </div>
+
+    <div class="info">
+        <strong>Created On :</strong>
+        {{ patient.created_at }}
+    </div>
+
+    <div class="info">
+        <strong>Symptoms :</strong>
+
+        {% for symptom in patient.symptoms.all %}
+            {{ symptom.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            No symptoms selected
+        {% endfor %}
+    </div>
+
+    <br>
+
+    <a href="{% url 'view_patients' %}" class="back-link">
+        ← Back to Patient Records
+    </a>
+
+    <a href="{% url 'generate_report' patient.id %}"
+        class="btn btn-primary">
+        Generate AI Report
+    </a>
+
+</div>
+
+</div>
+
+{% endblock %}
