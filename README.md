@@ -1,17 +1,34 @@
 # Uterus Disease Prediction System
 
-![Workflow Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/workflow_diagram_1782391317656.png)
+---
+
+![Architecture Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/architecture_diagram_1782392275713.png)
+
+---
 
 ## Overview
-This repository implements a **Uterus Disease Prediction System** that utilizes machine learning to analyze medical images and predict potential uterine conditions. The pipeline consists of:
+The **Uterus Disease Prediction System** is a complete end‑to‑end machine‑learning pipeline that assists clinicians in diagnosing uterine conditions from medical imaging data (e.g., ultrasound, MRI). The system automates the entire workflow:
 
-1. **Image acquisition** – Input medical images (e.g., ultrasound, MRI).
-2. **Pre‑processing** – Normalisation, resizing, and noise reduction.
-3. **Feature extraction** – Using convolutional layers or handcrafted features.
-4. **Model inference** – A trained classifier/regressor predicts disease type and severity.
-5. **Result presentation** – A concise diagnosis report is generated.
+1. **Data Ingestion** – Load raw medical images.
+2. **Pre‑processing** – Normalise, resize, denoise, and optionally augment images to improve model robustness.
+3. **Feature Extraction** – Deep convolutional neural networks (CNN) automatically learn discriminative visual features.
+4. **Model Inference** – A trained classifier predicts disease categories (e.g., fibroids, polyps, cancer) and outputs confidence scores.
+5. **Result Visualization** – Predictions are presented as a concise report with optional heat‑maps highlighting regions of interest.
 
-The diagram above visualises the end‑to‑end workflow.
+The pipeline is designed for reproducibility, scalability, and easy integration into clinical workflows.
+
+---
+
+![Workflow Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/workflow_diagram_1782391317656.png)
+
+---
+
+## Data Flow
+The following diagram illustrates the data‑flow through the system, from raw image to final diagnosis:
+
+![Data Flow Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/data_flow_diagram_1782392060254.png)
+
+---
 
 ## Installation
 ```bash
@@ -19,21 +36,36 @@ The diagram above visualises the end‑to‑end workflow.
 git clone https://github.com/sivatha321/Uterus-Disease-Prediction-System.git
 cd Uterus-Disease-Prediction-System
 
-# Set up a virtual environment (optional)
+# Create a virtual environment (recommended)
 python -m venv venv
-source venv/bin/activate  # on Windows use `venv\\Scripts\\activate`
+# On Windows
+venv\Scripts\activate
+# On Unix/macOS
+source venv/bin/activate
 
-# Install dependencies
+# Install required packages
 pip install -r requirements.txt
 ```
 
+---
+
 ## Usage
 ```bash
-python predict.py --image path/to/image.png
+# Run a prediction on a single image
+python predict.py --image path/to/medical_image.png
 ```
+The script prints the predicted disease label, confidence score, and optionally saves a heat‑map overlay.
+
+---
 
 ## Contributing
-Contributions are welcome! Fork the repo, create a feature branch, and submit a PR.
+We welcome contributions! Please follow these steps:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b my-feature`).
+3. Make your changes and ensure tests pass.
+4. Submit a pull request with a clear description of the changes.
+
+---
 
 ## License
-MIT License.
+This project is released under the MIT License.
