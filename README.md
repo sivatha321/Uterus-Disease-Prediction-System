@@ -1,71 +1,95 @@
 # Uterus Disease Prediction System
 
----
-
-![Architecture Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/architecture_diagram_1782392275713.png)
+A machine learning-based system designed to assist medical practitioners in the diagnosis of uterine diseases from imaging data (ultrasound and MRI). By automating the image processing, feature extraction, and classification pipeline, the system aims to provide fast, reliable, and interpretable diagnostic assistance.
 
 ---
 
-## Overview
-The **Uterus Disease Prediction System** is a complete end‑to‑end machine‑learning pipeline that assists clinicians in diagnosing uterine conditions from medical imaging data (e.g., ultrasound, MRI). The system automates the entire workflow:
+## 📸 System Architecture & Workflows
 
-1. **Data Ingestion** – Load raw medical images.
-2. **Pre‑processing** – Normalise, resize, denoise, and optionally augment images to improve model robustness.
-3. **Feature Extraction** – Deep convolutional neural networks (CNN) automatically learn discriminative visual features.
-4. **Model Inference** – A trained classifier predicts disease categories (e.g., fibroids, polyps, cancer) and outputs confidence scores.
-5. **Result Visualization** – Predictions are presented as a concise report with optional heat‑maps highlighting regions of interest.
+### 1. System Architecture
+The overall architecture of the system connects user interface/image ingestion down to database storage and diagnostic reports.
 
-The pipeline is designed for reproducibility, scalability, and easy integration into clinical workflows.
+![System Architecture](images/architecture_diagram.png)
 
----
+### 2. End-to-End Workflow
+The pipeline processes incoming scans sequentially to generate a clinical suggestion:
 
-![Workflow Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/workflow_diagram_1782391317656.png)
+![Workflow Diagram](images/workflow_diagram.png)
 
----
+### 3. Detailed Data Flow
+How data transforms from a raw medical image into predictive features and final confidence scores:
 
-## Data Flow
-The following diagram illustrates the data‑flow through the system, from raw image to final diagnosis:
-
-![Data Flow Diagram](file:///C:/Users/sivat/.gemini/antigravity-ide/brain/7a832932-f01c-4115-af19-b3b22a1dfc9b/data_flow_diagram_1782392060254.png)
+![Data Flow Diagram](images/data_flow_diagram.png)
 
 ---
 
-## Installation
+## 🔍 How It Works
+
+1. **Data Ingestion**: Raw scans (ultrasound or MRI) are fed into the system.
+2. **Pre-processing**: Noise reduction filters, contrast adjustment, and resizing normalize input images.
+3. **Feature Extraction**: Convolutional Neural Networks (CNNs) extract high-level spatial features from the scans.
+4. **Model Inference**: Deep learning classifiers or alternative ML models (e.g., Random Forest) evaluate feature vectors to predict disease categories (e.g., normal, fibroids, polyps, cysts).
+5. **Report Generation**: Outputs a structured report with confidence scores and prediction summaries.
+
+---
+
+## 🛠️ Installation & Setup
+
+### Prerequisites
+- Python 3.8+
+- Git
+
+### Steps
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/sivatha321/Uterus-Disease-Prediction-System.git
+   cd Uterus-Disease-Prediction-System
+   ```
+
+2. **Set up Virtual Environment**
+   ```bash
+   # Create a virtual environment
+   python -m venv venv
+
+   # Activate the environment
+   # On Windows:
+   venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+## 🚀 Usage
+
+To run a prediction on a medical image scan:
 ```bash
-# Clone the repository (if not already cloned)
-git clone https://github.com/sivatha321/Uterus-Disease-Prediction-System.git
-cd Uterus-Disease-Prediction-System
+python predict.py --image path/to/image.png
+```
 
-# Create a virtual environment (recommended)
-python -m venv venv
-# On Windows
-venv\Scripts\activate
-# On Unix/macOS
-source venv/bin/activate
-
-# Install required packages
-pip install -r requirements.txt
+For using the Random Forest classifier:
+```bash
+python rf_predict.py --image path/to/image.png
 ```
 
 ---
 
-## Usage
-```bash
-# Run a prediction on a single image
-python predict.py --image path/to/medical_image.png
-```
-The script prints the predicted disease label, confidence score, and optionally saves a heat‑map overlay.
+## 🤝 Contributing
+
+Contributions are highly appreciated! 
+1. Fork this repository.
+2. Create a feature branch (`git checkout -b feature/NewFeature`).
+3. Commit your changes (`git commit -m 'Add some NewFeature'`).
+4. Push to the branch (`git push origin feature/NewFeature`).
+5. Open a Pull Request.
 
 ---
 
-## Contributing
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b my-feature`).
-3. Make your changes and ensure tests pass.
-4. Submit a pull request with a clear description of the changes.
+## 📄 License
 
----
-
-## License
-This project is released under the MIT License.
+This project is licensed under the MIT License.
